@@ -1,0 +1,70 @@
+micronaut:
+  application:
+    name: micronautsimpleapp
+    max: 50
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+      swagger-ui:
+        paths: classpath:META-INF/swagger/views/swagger-ui
+        mapping: /swagger-ui/**
+  security:
+    enabled: true
+    authentication: cookie
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: '"${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForANewOne}"'
+    oauth2:
+      clients:
+        github:
+          client-id: '${OAUTH_CLIENT_ID:9394773a3541e974466b}'
+          client-secret: '${OAUTH_CLIENT_SECRET:4fa287d7ecd5a55e6c707d82759cb90580172d43}'
+          scopes:
+            - user:email
+            - read:user
+            - public_repo
+          authorization:
+            url: 'https://github.com/login/oauth/authorize'
+          token:
+            url: 'https://github.com/login/oauth/access_token'
+            auth-method: CLIENT_SECRET_POST
+    endpoints:
+      logout:
+        get-allowed: true
+    intercept-url-map:
+      - pattern: /swagger-ui/**
+        access:
+          - isAuthenticated()
+      - pattern: /swagger/**
+        access:
+          - isAuthenticated()
+  http:
+    services:
+      githubv3:
+        url: "https://api.github.com"
+netty:
+  default:
+    allocator:
+      max-order: 3
+datasources:
+  default:
+#    url: ${JDBC_URL:`jdbc:h2:mem:default;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE`}
+#    username: ${JDBC_USER:sa}
+#    password: ${JDBC_PASSWORD:""}
+#    driverClassName: ${JDBC_DRIVER:org.h2.Driver}
+    url: ${JDBC_URL:`jdbc:postgresql://localhost:5432/micronaut`}
+    username: ${JDBC_USER:micronaut}
+    password: ${JDBC_PASSWORD:ymKyc8p0}
+    driverClassName: ${JDBC_DRIVER:org.postgresql.Driver}
+jpa:
+  default:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+        show_sql: true
