@@ -9,6 +9,8 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.*;
 import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.scheduling.annotation.ExecuteOn;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.rules.SecurityRule;
 
 import javax.persistence.PersistenceException;
 import javax.validation.Valid;
@@ -20,6 +22,7 @@ import static io.micronaut.http.HttpHeaders.LOCATION;
 
 @ExecuteOn(TaskExecutors.IO)
 @Controller("/genres")
+@Secured(SecurityRule.IS_AUTHENTICATED)
 class GenreController {
 
     private final GenreRepository genreRepository;

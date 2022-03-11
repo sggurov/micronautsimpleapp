@@ -11,7 +11,7 @@
 
 <nav>
   <ul>
-    <li th:unless="${security}"><a href="/oauth/login/github">Enter</a></li>
+    <li th:unless="${security}"><a href="/oauth/login/github">Sing In via GitHub</a></li>
     <li th:if="${security}"><a href="/swagger-ui">Swagger UI</a></li>
     <li th:if="${security}"><a href="/repos">View Repos</a></li>
     <li th:if="${security}"><a href="/logout">Logout</a></li>
